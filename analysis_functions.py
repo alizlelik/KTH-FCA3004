@@ -60,15 +60,15 @@ def nonlinear_diffusion(t,D,L):
 
 def plot_fit_msd(input_filename, title, linear = True):
     
-    [time,msd] = np.loadtxt(filename,dtype='float',comments=['#','@'],unpack=True)
+    [time,msd] = np.loadtxt(input_filename,dtype='float',comments=['#','@'],unpack=True)
     time = np.divide(time,1000.)
     if linear:
         popt,pcov = curve_fit(linear_diffusion,time,msd)
     else:
         popt,pcov = curve_fit(nonlinear_diffusion,time,msd)
-        perr = np.sqrt(np.diag(pcov))
-        D = popt[0]
-        D_error = perr[0]
+    perr = np.sqrt(np.diag(pcov))
+    D = popt[0]
+    D_error = perr[0]
         
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
@@ -83,7 +83,7 @@ def plot_fit_msd(input_filename, title, linear = True):
     ax1.set_ylim(bottom=0.)
     ax1.set_xlim(left=0.)
     plt.title(title)
-    output_filename = filename[:-3]+"png"
+    output_filename = input_filename[:-3]+"png"
     plt.savefig(output_filename,bbox_inches='tight',dpi=600,transparent=True)
     plt.show()
     
